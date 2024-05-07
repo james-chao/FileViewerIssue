@@ -11,6 +11,9 @@ builder.Services.AddRazorComponents().AddInteractiveServerComponents();
 
 builder.Services.AddBootstrapBlazor();
 
+// 增加 Table Excel 导出服务
+builder.Services.AddBootstrapBlazorTableExportService();
+
 // 增加 SignalR 服务数据传输大小限制配置
 builder.Services.Configure<HubOptions>(option => option.MaximumReceiveMessageSize = null);
 

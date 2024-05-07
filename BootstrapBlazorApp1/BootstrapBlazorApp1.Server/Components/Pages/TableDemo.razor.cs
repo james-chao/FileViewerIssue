@@ -28,6 +28,9 @@ namespace BootstrapBlazorApp1.Server.Components.Pages
         private FileViewer? fileViewer { get; set; }
         private string? FilenameStream { get; set; }
 
+        [Inject]
+        private ITableExport? TableExport { get; set; }
+
         /// <summary>
         /// 查询操作方法
         /// </summary>
@@ -108,8 +111,19 @@ namespace BootstrapBlazorApp1.Server.Components.Pages
             {
                 Items.Remove(foo);
             }
-
             return Task.FromResult(true);
+        }
+
+        private async Task<bool> OnExportAsync(ITableExportDataContext<Foo> context)
+        {
+            var ret = false;
+
+            if(context.ExportType == TableExportType.Excel)
+            { ret = await TableExport!.ExportExcelAsync(Items!, context.Columns); }
+            else if (context.ExportType == TableExportType.Pdf)
+            { ret = await TableExport!.ExportPdfAsync(Items!, context.Columns); }
+
+            return ret;
         }
 
         private async Task ApplyFilenameStream()
